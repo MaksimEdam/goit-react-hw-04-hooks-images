@@ -1,47 +1,42 @@
 import { toast } from "react-toastify";
 import { ImSearch } from "react-icons/im";
-import React, { Component } from "react";
+import { useState } from "react";
 import "react-toastify/dist/ReactToastify.css";
 import s from "./Searchbar.module.css";
-class Searchbar extends Component {
-  state = {
-    imageName: "",
+
+function Searchbar({ onSubmit }) {
+  const [imageName, setImageName] = useState("");
+
+  const handleNameChange = (e) => {
+    setImageName(e.currentTarget.value);
   };
 
-  handleNameChange = (event) => {
-    this.setState({ imageName: event.currentTarget.value.toLowerCase() });
-  };
-
-  handleSubmit = (event) => {
-    event.preventDefault();
-    if (this.state.imageName.trim() === "") {
-      toast.warn("Введите поисковый запрос");
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (imageName.trim() === "") {
+      toast("Type in the keyword");
       return;
     }
-
-    this.props.onSubmit(this.state.imageName);
-    this.setState({ imageName: "" });
+    onSubmit(imageName);
   };
 
-  render() {
-    return (
-      <header className={s.Searchbar}>
-        <form className={s.SearchForm} onSubmit={this.handleSubmit}>
-          <button type="submit" className={s.SearchFormButton}>
-            <ImSearch style={{ marginRight: 8 }} />
-            <span className={s.SearchFormButtonLabel}>Search</span>
-          </button>
-          <input
-            className={s.SearchFormInput}
-            type="text"
-            placeholder="Search images and photos"
-            value={this.state.imageName}
-            onChange={this.handleNameChange}
-          />
-        </form>
-      </header>
-    );
-  }
+  return (
+    <header className={s.Searchbar}>
+      <form className={s.SearchForm} onSubmit={handleSubmit}>
+        <button type="submit" className={s.SearchFormButton}>
+          <ImSearch style={{ marginRight: 8 }} />
+          <span className={s.SearchFormButtonLabel}>Search</span>
+        </button>
+        <input
+          className={s.SearchFormInput}
+          type="text"
+          placeholder="Search images and photos"
+          value={imageName}
+          onChange={handleNameChange}
+        />
+      </form>
+    </header>
+  );
 }
 
 export default Searchbar;
