@@ -1,7 +1,35 @@
-import { Component } from "react";
+import { useState } from "react";
 import Modal from "../Modal";
 import s from "./ImageGalleryItem.module.css";
-export default class ImageGalleryItem extends Component {
+
+function ImageGalleryItem({ webformatURL, largeImageURL, tags }) {
+  const [showModal, setShowModal] = useState(false);
+
+  const toggleModal = () => {
+    setShowModal(!showModal);
+  };
+  return (
+    <li className={s.ImageGalleryItem}>
+      <img
+        onClick={toggleModal}
+        className={s.ImageGalleryItemImage}
+        src={webformatURL}
+        alt={tags}
+      />
+      {showModal && (
+        <Modal
+          largeImageURL={largeImageURL}
+          toggleModal={toggleModal}
+          alt={tags}
+        />
+      )}
+    </li>
+  );
+}
+
+export default ImageGalleryItem;
+
+/* export default class ImageGalleryItem extends Component {
   state = {
     showModal: false,
   };
@@ -32,3 +60,4 @@ export default class ImageGalleryItem extends Component {
     );
   }
 }
+ */
